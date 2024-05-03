@@ -11,6 +11,7 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<any>(null); // save user infor
     const [icon, setIcon] = useState<Boolean>(false)
     const [contentMessage, setContentMessage] = useState<any>("") // nội dung tin nhắn chuẩn bị gửi
+
     return (
         <QueryClientProvider client={queryClient}>
             <AppContext.Provider value={{

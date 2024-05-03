@@ -6,6 +6,7 @@ import Chat from "../_member/pages/Chat"
 import Profile from "../_member/pages/Profile"
 import SignIn from "../_auth/pages/SignIn"
 import NotFound from "../components/NotFound"
+import CreatePost from "../_member/pages/CreatePost"
 
 const AppRoutes = () => {
     return (
@@ -21,6 +22,7 @@ const AppRoutes = () => {
                     <Route index element={<Home />} />
                     <Route path="/chat" element={<Chat />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/createpost" element={<CreatePost />} />
                 </Route>
 
                 <Route path="*" element={<NotFound />} />

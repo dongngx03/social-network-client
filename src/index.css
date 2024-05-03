@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+#owner:hover + #staff {
+    display: block;
+    transition: 0.5s all;
+}
+
+#staff {
+    display: none;
+    transition: 0.5s all;
+}
+

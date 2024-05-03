@@ -2,6 +2,9 @@ import { useContext, useEffect } from "react"
 import Icon from "../../components/common/Icon"
 import { AppContext } from "../../context/AppProvider"
 import ChatList from "../../components/chat/ChatList"
+import FriendMessage from "../../components/chat/FriendMessage"
+import MyMessage from "../../components/chat/MyMessage"
+import { useRef } from "react"
 
 const Chat = () => {
     const {
@@ -11,6 +14,8 @@ const Chat = () => {
         icon,
         setIcon
     } = useContext(AppContext)
+
+    const boxChat: any = useRef(null)
 
     // add icon in contentMessage
     const addIconInInputMessage = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -27,6 +32,10 @@ const Chat = () => {
     useEffect(() => {
         // using sidebar mini
         setSidebarMini(true)
+        // new mess 
+        if (boxChat.current) {
+            boxChat.current.scrollTop = boxChat.current.scrollHeight;
+        }
     }, [])
     return (
         <div className=' w-full h-screen overflow-auto relative flex'>
@@ -50,7 +59,7 @@ const Chat = () => {
                     </button>
                 </div>
 
-                <div className="flex-1 flex flex-col overflow-auto">
+                <div ref={boxChat} className="flex-1 flex flex-col overflow-auto gap-2">
                     <div className="w-full h-[288px] flex flex-col justify-center items-center gap-2">
                         <div className="w-[96px] h-[96px] relative overflow-hidden rounded-full">
                             <img className="w-full h-full object-cover rounded-full" src="https://scontent.cdninstagram.com/v/t51.2885-19/429457662_768668851422264_4514231864000277042_n.jpg?stp=dst-jpg_s100x100&_nc_cat=109&ccb=1-7&_nc_sid=3fd06f&_nc_ohc=iCfEtEGTEV0Ab4QXTyT&_nc_ht=scontent.cdninstagram.com&oh=00_AfCUmxOKA2-6m5qrZ6RZSajV2KWrouvCmW197rYts3NQ7w&oe=66310F40" alt="" />
@@ -63,6 +72,43 @@ const Chat = () => {
                             xem trang cá nhân
                         </button>
                     </div>
+
+                    {/* friends mess */}
+                    <FriendMessage />
+                    {/* my mess */}
+                    <MyMessage />
+                    {/* friends mess */}
+                    <FriendMessage />
+                    {/* my mess */}
+                    <MyMessage />
+                    {/* friends mess */}
+                    <FriendMessage />
+                    {/* my mess */}
+                    <MyMessage />
+                    {/* friends mess */}
+                    <FriendMessage />
+                    {/* my mess */}
+                    <MyMessage />
+                    {/* friends mess */}
+                    <FriendMessage />
+                    {/* my mess */}
+                    <MyMessage />
+                    {/* friends mess */}
+                    <FriendMessage />
+                    {/* my mess */}
+                    <MyMessage />
+                    {/* friends mess */}
+                    <FriendMessage />
+                    {/* my mess */}
+                    <MyMessage />
+                    {/* friends mess */}
+                    <FriendMessage />
+                    {/* my mess */}
+                    <MyMessage />
+
+
+
+
                 </div>
 
                 <div className="w-full h-[77px] p-4">

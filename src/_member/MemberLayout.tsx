@@ -1,16 +1,17 @@
 import { useContext } from "react";
 import { Outlet } from "react-router-dom";
+import Loading from "../components/Loading";
 import SideBar from "../components/SideBar";
 import SideBarMini from "../components/SideBarMini";
 import Comment from "../components/home/Comment";
 import { AppContext } from "../context/AppProvider";
 import useGetUser from "../hooks/useGetUser";
-import Loading from "../components/Loading";
-
 
 const MemberLayout = () => {
-    const { sidebarMini, comment, setUser } = useContext(AppContext);
+    const { sidebarMini, comment, setUser, user } = useContext(AppContext);
     const { isLoading } = useGetUser(setUser)
+
+    console.log(user);
 
     if (isLoading) return <Loading />
     return (

@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 
-
-
 const useGetUser = (setUser: (agrs: any) => {}) => {
     const { data, ...rest } = useQuery({
         queryKey: ['USER'],
@@ -20,6 +18,7 @@ const useGetUser = (setUser: (agrs: any) => {}) => {
                 const res = await request.json();
                 if (res?.success) {
                     setUser(res)
+
                 } else {
                     window.location.href = "/sign-in"
                 }
