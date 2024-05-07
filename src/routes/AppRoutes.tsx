@@ -7,6 +7,7 @@ import Profile from "../_member/pages/Profile"
 import SignIn from "../_auth/pages/SignIn"
 import NotFound from "../components/NotFound"
 import CreatePost from "../_member/pages/CreatePost"
+import ProfileEdit from "../_member/pages/ProfileEdit"
 
 const AppRoutes = () => {
     return (
@@ -23,6 +24,7 @@ const AppRoutes = () => {
                     <Route path="/chat" element={<Chat />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/createpost" element={<CreatePost />} />
+                    <Route path="/profile/edit" element={<ProfileEdit />} />
                 </Route>
 
                 <Route path="*" element={<NotFound />} />
