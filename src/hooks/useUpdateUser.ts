@@ -7,10 +7,11 @@ const useUpdateUser = () => {
         mutationFn: async (data: formUser) => {
             try {
                 const res = await instance.put("/v1/api/user/", data)
-                
+
+                console.log(res);
+
             } catch (error) {
                 console.log(error);
-
             }
         },
         onSuccess: () => {
@@ -23,3 +24,5 @@ const useUpdateUser = () => {
         ...rest
     }
 }
+
+export default useUpdateUser

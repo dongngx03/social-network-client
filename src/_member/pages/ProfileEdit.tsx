@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import { Select, Input, Modal, message } from "antd";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import formUser from "../../interface/formUser";
+import { useMutation } from "@tanstack/react-query";
+import instance from "../../services/instance";
+import Loading from "../../components/Loading";
 
 
 const ProfileEdit = () => {
@@ -11,12 +14,30 @@ const ProfileEdit = () => {
     const { register, handleSubmit, control, reset } = useForm<formUser>()
     const [isModalOpen, setIsModalOpen] = useState<{
         status: boolean,
-        newInfor: null | formUser
+        newInfor: null | any
     }>({
         status: false,
         newInfor: null
     })
     const [messageApi, contextHolder] = message.useMessage();
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: async (data: formUser) => {
+            try {
+                const res = await instance.put(`/v1/api/user/${user?.user?.id}`, data)
+                return res
+
+            } catch (error: any) {
+                return error
+            }
+        },
+        onSuccess: (res: any) => {
+
+            
+
+        }
+    })
+
     useEffect(() => {
         setSidebarMini(false);
         reset({ ...user?.user, birtday: user?.user?.birtday.split("T")[0] })
@@ -24,12 +45,24 @@ const ProfileEdit = () => {
 
 
     const onSubmit: SubmitHandler<formUser> = (data: formUser) => {
+        const { id, ...rest } = data
         setIsModalOpen({
             status: true,
-            newInfor: data
+            newInfor: { ...rest }
         })
-
     }
+
+    const changeUserInfor = async () => {
+        console.log(isModalOpen.newInfor);
+        mutate(isModalOpen.newInfor)
+
+        setIsModalOpen({
+            status: false,
+            newInfor: null
+        })
+    }
+
+    if (isPending) return <><Loading /></>
     return (
         <div className="w-full h-full flex">
             {contextHolder}
@@ -160,23 +193,13 @@ const ProfileEdit = () => {
             <Modal
                 title="Xác nhận thông tin"
                 open={isModalOpen.status}
+
                 onCancel={() => setIsModalOpen({
                     status: false,
                     newInfor: null
                 })}
-                onOk={() => {
-                    console.log(isModalOpen.newInfor);
-                    messageApi.open({
-                        type: 'success',
-                        content: 'Thay đổi thông tin thành công',
-                    });
 
-                    setIsModalOpen({
-                        status: false,
-                        newInfor: null
-                    })
-
-                }}
+                onOk={changeUserInfor}
             >
                 <div className="flex flex-col gap-3 p-2">
                     <div className="flex justify-start items-center gap-3">
