@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { AppContext } from "../../context/AppProvider"
+import { Image } from "antd"
 
 const Profile = () => {
     const { setSidebarMini, user } = useContext(AppContext)
@@ -16,10 +17,12 @@ const Profile = () => {
                         {/* avatar */}
                         <div className="w-full flex">
                             <div className="w-1/3 flex justify-center items-center">
-                                <img
-                                    className="w-[150px] h-[150px] rounded-full object-cover"
-                                    src={user?.user?.avatar}
-                                />
+                                <div className="w-[150px] h-[150px] rounded-full overflow-hidden flex justify-center items-center">
+                                    <Image
+                                        className=" w-full h-full rounded-full object-cover "
+                                        src={user?.user?.avatar}
+                                    />
+                                </div>
                             </div>
 
                             <div className="w-2/3 flex flex-col gap-5 justify-center">

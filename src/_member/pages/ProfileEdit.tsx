@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import instance from "../../services/instance";
 import Loading from "../../components/Loading";
 import axios from "axios";
+import { Image } from 'antd';
 
 
 const ProfileEdit = () => {
@@ -90,7 +91,13 @@ const ProfileEdit = () => {
         if (file) {
             formData.append("file", file)
             await axios.post(api, formData)
-                .then((res) => console.log(res))
+                .then(async (res) => {
+                    try {
+                        await instance.put(`/v1/api/user/update-avatar/${user?.user?.id}`, { avatar: res.data.url })
+                    } catch (error) {
+                        console.log(error);
+                    }
+                })
                 .then(() => messageApi.open({
                     type: 'success',
                     content: "Cập nhật ảnh đại diện thành công",
@@ -132,8 +139,11 @@ const ProfileEdit = () => {
 
                 <div className="w-full h-auto flex justify-between items-center bg-[#EFEFEF] px-4 py-4 rounded-2xl">
                     <div className="flex justify-start items-center gap-3">
-                        <div className="w-[56px] h-[56px] rounded-full relative overflow-hidden">
-                            <img className=" w-full h-full rounded-full object-cover " src={user?.user?.avatar} alt="" />
+                        <div className="w-[56px] h-[56px] rounded-full relative overflow-hidden flex justify-center items-center">
+                            <Image
+                                className=" w-full h-full rounded-full object-cover "
+                                src={user?.user?.avatar}
+                            />
                         </div>
 
                         <div className="flex flex-col">
