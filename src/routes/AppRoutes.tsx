@@ -8,6 +8,7 @@ import SignIn from "../_auth/pages/SignIn"
 import NotFound from "../components/NotFound"
 import CreatePost from "../_member/pages/CreatePost"
 import ProfileEdit from "../_member/pages/ProfileEdit"
+import ProfileFriend from "../_member/pages/ProfileFriend"
 
 const AppRoutes = () => {
     return (
@@ -25,6 +26,7 @@ const AppRoutes = () => {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/createpost" element={<CreatePost />} />
                     <Route path="/profile/edit" element={<ProfileEdit />} />
+                    <Route path="/profile/:nickname" element={<ProfileFriend />}/> 
                 </Route>
 
                 <Route path="*" element={<NotFound />} />

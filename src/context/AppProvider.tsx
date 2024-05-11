@@ -11,6 +11,7 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<any>(null); // save user infor
     const [icon, setIcon] = useState<Boolean>(false)
     const [contentMessage, setContentMessage] = useState<any>("") // nội dung tin nhắn chuẩn bị gửi
+    const [openSearch, setOpenSearch] = useState<boolean>(false)
 
     return (
         <QueryClientProvider client={queryClient}>
@@ -24,7 +25,9 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
                 icon,
                 setIcon,
                 contentMessage,
-                setContentMessage
+                setContentMessage,
+                openSearch,
+                setOpenSearch
             }}>
                 <BrowserRouter>
                     {children}

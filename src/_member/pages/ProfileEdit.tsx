@@ -7,6 +7,7 @@ import formUser from "../../interface/formUser";
 import { useMutation } from "@tanstack/react-query";
 import instance from "../../services/instance";
 import Loading from "../../components/Loading";
+import axios from "axios";
 
 
 const ProfileEdit = () => {
@@ -19,7 +20,11 @@ const ProfileEdit = () => {
         status: false,
         newInfor: null
     })
+    const [isModalUpload, setIsModalUpload] = useState(false)
     const [messageApi, contextHolder] = message.useMessage();
+    const [messageResult, setMessageResult] = useState({} as any)
+    const [file, setFile] = useState("")
+    const [imgUrl, setImgUrl] = useState('');
 
     const { mutate, isPending } = useMutation({
         mutationFn: async (data: formUser) => {
@@ -31,10 +36,8 @@ const ProfileEdit = () => {
                 return error
             }
         },
-        onSuccess: (res: any) => {
-
-            
-
+        onSuccess: (data) => {
+            setMessageResult(data)
         }
     })
 
@@ -43,6 +46,21 @@ const ProfileEdit = () => {
         reset({ ...user?.user, birtday: user?.user?.birtday.split("T")[0] })
     }, [])
 
+    useEffect(() => {
+        if (messageResult?.status === 200) {
+            messageApi.open({
+                type: 'success',
+                content: messageResult.data.message,
+            });
+        }
+
+        if (messageResult?.response?.status === 400) {
+            messageApi.open({
+                type: 'error',
+                content: messageResult?.response?.data?.message,
+            });
+        }
+    }, [messageResult])
 
     const onSubmit: SubmitHandler<formUser> = (data: formUser) => {
         const { id, ...rest } = data
@@ -55,11 +73,39 @@ const ProfileEdit = () => {
     const changeUserInfor = async () => {
         console.log(isModalOpen.newInfor);
         mutate(isModalOpen.newInfor)
-
         setIsModalOpen({
             status: false,
             newInfor: null
         })
+    }
+
+    const uploadFile = async () => {
+        const CLOUND_NAME = "dygixfuh9"
+        const PRESET_NAME = "NNshop"
+        const FOLDER_NAME = "social-network"
+        const api = `https://api.cloudinary.com/v1_1/${CLOUND_NAME}/image/upload`
+        const formData = new FormData()
+        formData.append("upload_preset", PRESET_NAME)
+        formData.append("folder", FOLDER_NAME)
+        if (file) {
+            formData.append("file", file)
+            await axios.post(api, formData)
+                .then((res) => console.log(res))
+                .then(() => messageApi.open({
+                    type: 'success',
+                    content: "Cập nhật ảnh đại diện thành công",
+                }))
+                .then(() => {
+                    setIsModalUpload(false)
+                    setFile("")
+                })
+
+        } else {
+            messageApi.open({
+                type: 'error',
+                content: "Vui lòng chọn file",
+            });
+        }
     }
 
     if (isPending) return <><Loading /></>
@@ -96,7 +142,10 @@ const ProfileEdit = () => {
                         </div>
                     </div>
 
-                    <button className="bg-[#0095F6] px-3 rounded-lg py-1 text-white">
+                    <button
+                        className="bg-[#0095F6] px-3 rounded-lg py-1 text-white"
+                        onClick={() => setIsModalUpload(!isModalUpload)}
+                    >
                         Đổi ảnh
                     </button>
                 </div>
@@ -223,6 +272,38 @@ const ProfileEdit = () => {
                     </div>
                 </div>
             </Modal>
+
+            <Modal
+                title="Chọn file ảnh mình muốn làm ảnh đại diện"
+                open={isModalUpload}
+                onCancel={() => setIsModalUpload(false)}
+                onOk={uploadFile}
+            >
+                <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload file</label>
+                    <input
+                        className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        id="file_input"
+                        type="file"
+                        onChange={(e: any) => {
+                            setFile(e.target.files[0])
+                            setImgUrl(URL.createObjectURL(e.target.files[0]))
+                        }}
+                    />
+
+                    <div className="w-full flex justify-center items-center p-5">
+                        {
+                            imgUrl
+                            &&
+                            <div className="w-[100px] h-[100px]" >
+                                <img className="w-full h-full object-contain" src={imgUrl} alt="" />
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </Modal>
+
         </div>
     )
 }
