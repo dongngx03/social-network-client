@@ -4,7 +4,13 @@ import { Link } from 'react-router-dom';
 import { AppContext } from '../context/AppProvider';
 
 const SideBar = () => {
-    const { user, setSidebarMini, setOpenSearch } = useContext(AppContext)
+    const {
+        user,
+        setSidebarMini,
+        setOpenSearch,
+        setOpenCreatePost
+    } = useContext(AppContext)
+
     const logout = () => {
         (
             async () => {
@@ -81,10 +87,13 @@ const SideBar = () => {
                         </Link>
                     </li>
                     <li className='flex items-center justify-center xl:justify-start 2xl:justify-start gap-5 w-full transition-all py-3 hover:bg-slate-100 focus:border xl:px-3 2xl:px-3 rounded-lg '>
-                        <Link to={"/createpost"} className='flex gap-3 '>
+                        <button
+                            className='flex gap-3 '
+                            onClick={() => setOpenCreatePost(true)}
+                        >
                             <svg aria-label="Bài viết mới" className="x1lliihq x1n2onr6 x5n08af" fill="currentColor" height="24" role="img" viewBox="0 0 24 24" width="24"><title>Bài viết mới</title><path d="M2 12v3.45c0 2.849.698 4.005 1.606 4.944.94.909 2.098 1.608 4.946 1.608h6.896c2.848 0 4.006-.7 4.946-1.608C21.302 19.455 22 18.3 22 15.45V8.552c0-2.849-.698-4.006-1.606-4.945C19.454 2.7 18.296 2 15.448 2H8.552c-2.848 0-4.006.699-4.946 1.607C2.698 4.547 2 5.703 2 8.552Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path><line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="6.545" x2="17.455" y1="12.001" y2="12.001"></line><line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="12.003" x2="12.003" y1="6.545" y2="17.455"></line></svg>
                             <span className='hidden xl:block 2xl:block font-sans'>Tạo</span>
-                        </Link>
+                        </button>
                     </li>
                     <li className='flex items-center justify-center 2xl:justify-start xl:justify-start gap-5 w-full transition-all py-3 hover:bg-slate-100 focus:border px-3 rounded-lg '>
                         <Link to={"/profile"} className='flex xl:gap-3 justify-center'>
@@ -102,6 +111,7 @@ const SideBar = () => {
                     </li>
                 </ul>
             </div>
+
         </div>
     )
 }
