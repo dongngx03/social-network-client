@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
 import instance from "../services/instance"
-import { Spin } from "antd"
+import { Empty, Spin } from "antd"
 import { useDebouncedCallback } from 'use-debounce';
 import { useContext } from "react";
 import { AppContext } from "../context/AppProvider";
@@ -74,7 +74,7 @@ const Search = () => {
                                         </a>
                                     ))
                                     : <div className="w-full h-full flex justify-center items-center">
-                                        <span className="text-gray-400">Nhập từ khóa để tìm kiếm</span>
+                                        <Empty />
                                     </div>
                             }
                         </>

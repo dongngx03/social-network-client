@@ -12,7 +12,12 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
     const [icon, setIcon] = useState<Boolean>(false)
     const [contentMessage, setContentMessage] = useState<any>("") // nội dung tin nhắn chuẩn bị gửi
     const [openSearch, setOpenSearch] = useState<boolean>(false)
-    const [openCreatePost, setOpenCreatePost] = useState(false)
+    const [openCreatePost, setOpenCreatePost] = useState<boolean>(false)
+    const [openPostDetail, setOpenPostDetail] = useState<any>({
+        status: false,
+        data: null,
+        user : null
+    })
 
     return (
         <QueryClientProvider client={queryClient}>
@@ -30,7 +35,9 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
                 openSearch,
                 setOpenSearch,
                 openCreatePost,
-                setOpenCreatePost
+                setOpenCreatePost,
+                openPostDetail,
+                setOpenPostDetail
             }}>
                 <BrowserRouter>
                     {children}
