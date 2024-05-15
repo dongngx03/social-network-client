@@ -1,15 +1,16 @@
+import { Image, Modal, Spin, message } from "antd";
 import { useContext, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Loading from "../components/Loading";
 import SideBar from "../components/SideBar";
 import SideBarMini from "../components/SideBarMini";
+import Icon from "../components/common/Icon";
 import Comment from "../components/home/Comment";
 import { AppContext } from "../context/AppProvider";
-import useGetUser from "../hooks/useGetUser";
-import { Image, Modal, Spin, message } from "antd";
-import Icon from "../components/common/Icon";
 import { createPost } from "../hooks/post";
 import uploadFile from "../hooks/uploadFile";
+import useGetUser from "../hooks/useGetUser";
+
 
 const MemberLayout = () => {
     const {

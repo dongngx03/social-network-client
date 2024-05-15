@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { socket } from "../context/AppProvider";
 
 const useGetUser = (setUser: (agrs: any) => {}) => {
     const { data, ...rest } = useQuery({
@@ -18,6 +19,7 @@ const useGetUser = (setUser: (agrs: any) => {}) => {
                 const res = await request.json();
                 if (res?.success) {
                     setUser(res)
+                    socket.emit('userinfor', { name: res.user.nickname, userId : res.user.id })
 
                 } else {
                     window.location.href = "/sign-in"

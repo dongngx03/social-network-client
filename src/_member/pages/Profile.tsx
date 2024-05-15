@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { Image, Modal, Skeleton } from "antd"
+import { Empty, Image, Modal, Skeleton } from "antd"
 import { useContext, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Keyboard, Navigation, Pagination } from 'swiper/modules'
@@ -114,6 +114,14 @@ const Profile = () => {
                             <svg aria-label="" className="x1lliihq x1n2onr6 x5n08af" fill="currentColor" height="12" role="img" viewBox="0 0 24 24" width="12"><title></title><rect fill="none" height="18" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" width="18" x="3" y="3"></rect><line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="9.015" x2="9.015" y1="3" y2="21"></line><line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="14.985" x2="14.985" y1="3" y2="21"></line><line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="21" x2="3" y1="9.015" y2="9.015"></line><line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="21" x2="3" y1="14.985" y2="14.985"></line></svg>
                             BÀI VIẾT
                         </span>
+
+                        {
+                            data?.data?.length === 0 && (
+                                <div className="flex justify-center items-center">
+                                    <Empty />
+                                </div>
+                            )
+                        }
 
                         {
                             isLoading
@@ -298,277 +306,6 @@ const Profile = () => {
                                     </div>
                                 </div>
                             </div>
-
-                            {/* comment item */}
-                            <div className='pt-3'>
-                                <div className='flex gap-3 justify-start'>
-                                    <Link to={"/"} className='w-[42px] h-[42px] rounded-full relative overflow-hidden'>
-                                        <img className='w-full h-full rounded-full object-cover' src="https://scontent.fhan5-6.fna.fbcdn.net/v/t39.30808-1/429480273_2063300667374136_2742581894874499461_n.jpg?stp=c0.0.200.200a_dst-jpg_p200x200&_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=IrlsCgRjxiQAb4yYS14&_nc_ht=scontent.fhan5-6.fna&oh=00_AfC5q6KVQZqvqP7xRGLeQjR56B8h-W1Dj9geCFNJyfZP7w&oe=66253ED9" alt="" />
-                                    </Link>
-                                    <div className=''>
-                                        <div className='w-80 flex flex-col gap-2'>
-                                            <div>
-                                                <Link to={"/"} className='text-[14px] font-semibold'>dongy_03</Link>
-                                                <span className='ml-2 text-sm font-normal '>cô ấy thật tuyệ vời đúng không hả các cậu , thật sự là như vậy đấy </span>
-                                            </div>
-
-                                            <div className='flex gap-4 items-center '>
-                                                <span className='text-xs font-light text-[#737373]'>1 tuần</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>8 lượt thích</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>trả lời</span>
-                                            </div>
-
-                                            <div className='flex jutify-start items-center gap-4'>
-                                                <hr className='w-[26px] border-1' />
-                                                <button>
-                                                    <span className='text-xs font-semibold text-[#737373]'>xem câu trả lời (19)</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* comment item */}
-                            <div className='pt-3'>
-                                <div className='flex gap-3 justify-start'>
-                                    <Link to={"/"} className='w-[42px] h-[42px] rounded-full relative overflow-hidden'>
-                                        <img className='w-full h-full rounded-full object-cover' src="https://scontent.fhan5-6.fna.fbcdn.net/v/t39.30808-1/429480273_2063300667374136_2742581894874499461_n.jpg?stp=c0.0.200.200a_dst-jpg_p200x200&_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=IrlsCgRjxiQAb4yYS14&_nc_ht=scontent.fhan5-6.fna&oh=00_AfC5q6KVQZqvqP7xRGLeQjR56B8h-W1Dj9geCFNJyfZP7w&oe=66253ED9" alt="" />
-                                    </Link>
-                                    <div className=''>
-                                        <div className='w-80 flex flex-col gap-2'>
-                                            <div>
-                                                <Link to={"/"} className='text-[14px] font-semibold'>dongy_03</Link>
-                                                <span className='ml-2 text-sm font-normal '>cô ấy thật tuyệ vời đúng không hả các cậu , thật sự là như vậy đấy </span>
-                                            </div>
-
-                                            <div className='flex gap-4 items-center '>
-                                                <span className='text-xs font-light text-[#737373]'>1 tuần</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>8 lượt thích</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>trả lời</span>
-                                            </div>
-
-                                            <div className='flex jutify-start items-center gap-4'>
-                                                <hr className='w-[26px] border-1' />
-                                                <button>
-                                                    <span className='text-xs font-semibold text-[#737373]'>xem câu trả lời (19)</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* comment item */}
-                            <div className='pt-3'>
-                                <div className='flex gap-3 justify-start'>
-                                    <Link to={"/"} className='w-[42px] h-[42px] rounded-full relative overflow-hidden'>
-                                        <img className='w-full h-full rounded-full object-cover' src="https://scontent.fhan5-6.fna.fbcdn.net/v/t39.30808-1/429480273_2063300667374136_2742581894874499461_n.jpg?stp=c0.0.200.200a_dst-jpg_p200x200&_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=IrlsCgRjxiQAb4yYS14&_nc_ht=scontent.fhan5-6.fna&oh=00_AfC5q6KVQZqvqP7xRGLeQjR56B8h-W1Dj9geCFNJyfZP7w&oe=66253ED9" alt="" />
-                                    </Link>
-                                    <div className=''>
-                                        <div className='w-80 flex flex-col gap-2'>
-                                            <div>
-                                                <Link to={"/"} className='text-[14px] font-semibold'>dongy_03</Link>
-                                                <span className='ml-2 text-sm font-normal '>cô ấy thật tuyệ vời đúng không hả các cậu , thật sự là như vậy đấy </span>
-                                            </div>
-
-                                            <div className='flex gap-4 items-center '>
-                                                <span className='text-xs font-light text-[#737373]'>1 tuần</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>8 lượt thích</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>trả lời</span>
-                                            </div>
-
-                                            <div className='flex jutify-start items-center gap-4'>
-                                                <hr className='w-[26px] border-1' />
-                                                <button>
-                                                    <span className='text-xs font-semibold text-[#737373]'>xem câu trả lời (19)</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* comment item */}
-                            <div className='pt-3'>
-                                <div className='flex gap-3 justify-start'>
-                                    <Link to={"/"} className='w-[42px] h-[42px] rounded-full relative overflow-hidden'>
-                                        <img className='w-full h-full rounded-full object-cover' src="https://scontent.fhan5-6.fna.fbcdn.net/v/t39.30808-1/429480273_2063300667374136_2742581894874499461_n.jpg?stp=c0.0.200.200a_dst-jpg_p200x200&_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=IrlsCgRjxiQAb4yYS14&_nc_ht=scontent.fhan5-6.fna&oh=00_AfC5q6KVQZqvqP7xRGLeQjR56B8h-W1Dj9geCFNJyfZP7w&oe=66253ED9" alt="" />
-                                    </Link>
-                                    <div className=''>
-                                        <div className='w-80 flex flex-col gap-2'>
-                                            <div>
-                                                <Link to={"/"} className='text-[14px] font-semibold'>dongy_03</Link>
-                                                <span className='ml-2 text-sm font-normal '>cô ấy thật tuyệ vời đúng không hả các cậu , thật sự là như vậy đấy </span>
-                                            </div>
-
-                                            <div className='flex gap-4 items-center '>
-                                                <span className='text-xs font-light text-[#737373]'>1 tuần</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>8 lượt thích</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>trả lời</span>
-                                            </div>
-
-                                            <div className='flex jutify-start items-center gap-4'>
-                                                <hr className='w-[26px] border-1' />
-                                                <button>
-                                                    <span className='text-xs font-semibold text-[#737373]'>xem câu trả lời (19)</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* comment item */}
-                            <div className='pt-3'>
-                                <div className='flex gap-3 justify-start'>
-                                    <Link to={"/"} className='w-[42px] h-[42px] rounded-full relative overflow-hidden'>
-                                        <img className='w-full h-full rounded-full object-cover' src="https://scontent.fhan5-6.fna.fbcdn.net/v/t39.30808-1/429480273_2063300667374136_2742581894874499461_n.jpg?stp=c0.0.200.200a_dst-jpg_p200x200&_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=IrlsCgRjxiQAb4yYS14&_nc_ht=scontent.fhan5-6.fna&oh=00_AfC5q6KVQZqvqP7xRGLeQjR56B8h-W1Dj9geCFNJyfZP7w&oe=66253ED9" alt="" />
-                                    </Link>
-                                    <div className=''>
-                                        <div className='w-80 flex flex-col gap-2'>
-                                            <div>
-                                                <Link to={"/"} className='text-[14px] font-semibold'>dongy_03</Link>
-                                                <span className='ml-2 text-sm font-normal '>cô ấy thật tuyệ vời đúng không hả các cậu , thật sự là như vậy đấy </span>
-                                            </div>
-
-                                            <div className='flex gap-4 items-center '>
-                                                <span className='text-xs font-light text-[#737373]'>1 tuần</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>8 lượt thích</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>trả lời</span>
-                                            </div>
-
-                                            <div className='flex jutify-start items-center gap-4'>
-                                                <hr className='w-[26px] border-1' />
-                                                <button>
-                                                    <span className='text-xs font-semibold text-[#737373]'>xem câu trả lời (19)</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* comment item */}
-                            <div className='pt-3'>
-                                <div className='flex gap-3 justify-start'>
-                                    <Link to={"/"} className='w-[42px] h-[42px] rounded-full relative overflow-hidden'>
-                                        <img className='w-full h-full rounded-full object-cover' src="https://scontent.fhan5-6.fna.fbcdn.net/v/t39.30808-1/429480273_2063300667374136_2742581894874499461_n.jpg?stp=c0.0.200.200a_dst-jpg_p200x200&_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=IrlsCgRjxiQAb4yYS14&_nc_ht=scontent.fhan5-6.fna&oh=00_AfC5q6KVQZqvqP7xRGLeQjR56B8h-W1Dj9geCFNJyfZP7w&oe=66253ED9" alt="" />
-                                    </Link>
-                                    <div className=''>
-                                        <div className='w-80 flex flex-col gap-2'>
-                                            <div>
-                                                <Link to={"/"} className='text-[14px] font-semibold'>dongy_03</Link>
-                                                <span className='ml-2 text-sm font-normal '>cô ấy thật tuyệ vời đúng không hả các cậu , thật sự là như vậy đấy </span>
-                                            </div>
-
-                                            <div className='flex gap-4 items-center '>
-                                                <span className='text-xs font-light text-[#737373]'>1 tuần</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>8 lượt thích</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>trả lời</span>
-                                            </div>
-
-                                            <div className='flex jutify-start items-center gap-4'>
-                                                <hr className='w-[26px] border-1' />
-                                                <button>
-                                                    <span className='text-xs font-semibold text-[#737373]'>xem câu trả lời (19)</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* comment item */}
-                            <div className='pt-3'>
-                                <div className='flex gap-3 justify-start'>
-                                    <Link to={"/"} className='w-[42px] h-[42px] rounded-full relative overflow-hidden'>
-                                        <img className='w-full h-full rounded-full object-cover' src="https://scontent.fhan5-6.fna.fbcdn.net/v/t39.30808-1/429480273_2063300667374136_2742581894874499461_n.jpg?stp=c0.0.200.200a_dst-jpg_p200x200&_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=IrlsCgRjxiQAb4yYS14&_nc_ht=scontent.fhan5-6.fna&oh=00_AfC5q6KVQZqvqP7xRGLeQjR56B8h-W1Dj9geCFNJyfZP7w&oe=66253ED9" alt="" />
-                                    </Link>
-                                    <div className=''>
-                                        <div className='w-80 flex flex-col gap-2'>
-                                            <div>
-                                                <Link to={"/"} className='text-[14px] font-semibold'>dongy_03</Link>
-                                                <span className='ml-2 text-sm font-normal '>cô ấy thật tuyệ vời đúng không hả các cậu , thật sự là như vậy đấy </span>
-                                            </div>
-
-                                            <div className='flex gap-4 items-center '>
-                                                <span className='text-xs font-light text-[#737373]'>1 tuần</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>8 lượt thích</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>trả lời</span>
-                                            </div>
-
-                                            <div className='flex jutify-start items-center gap-4'>
-                                                <hr className='w-[26px] border-1' />
-                                                <button>
-                                                    <span className='text-xs font-semibold text-[#737373]'>xem câu trả lời (19)</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* comment item */}
-                            <div className='pt-3'>
-                                <div className='flex gap-3 justify-start'>
-                                    <Link to={"/"} className='w-[42px] h-[42px] rounded-full relative overflow-hidden'>
-                                        <img className='w-full h-full rounded-full object-cover' src="https://scontent.fhan5-6.fna.fbcdn.net/v/t39.30808-1/429480273_2063300667374136_2742581894874499461_n.jpg?stp=c0.0.200.200a_dst-jpg_p200x200&_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=IrlsCgRjxiQAb4yYS14&_nc_ht=scontent.fhan5-6.fna&oh=00_AfC5q6KVQZqvqP7xRGLeQjR56B8h-W1Dj9geCFNJyfZP7w&oe=66253ED9" alt="" />
-                                    </Link>
-                                    <div className=''>
-                                        <div className='w-80 flex flex-col gap-2'>
-                                            <div>
-                                                <Link to={"/"} className='text-[14px] font-semibold'>dongy_03</Link>
-                                                <span className='ml-2 text-sm font-normal '>cô ấy thật tuyệ vời đúng không hả các cậu , thật sự là như vậy đấy </span>
-                                            </div>
-
-                                            <div className='flex gap-4 items-center '>
-                                                <span className='text-xs font-light text-[#737373]'>1 tuần</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>8 lượt thích</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>trả lời</span>
-                                            </div>
-
-                                            <div className='flex jutify-start items-center gap-4'>
-                                                <hr className='w-[26px] border-1' />
-                                                <button>
-                                                    <span className='text-xs font-semibold text-[#737373]'>xem câu trả lời (19)</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* comment item */}
-                            <div className='pt-3'>
-                                <div className='flex gap-3 justify-start'>
-                                    <Link to={"/"} className='w-[42px] h-[42px] rounded-full relative overflow-hidden'>
-                                        <img className='w-full h-full rounded-full object-cover' src="https://scontent.fhan5-6.fna.fbcdn.net/v/t39.30808-1/429480273_2063300667374136_2742581894874499461_n.jpg?stp=c0.0.200.200a_dst-jpg_p200x200&_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=IrlsCgRjxiQAb4yYS14&_nc_ht=scontent.fhan5-6.fna&oh=00_AfC5q6KVQZqvqP7xRGLeQjR56B8h-W1Dj9geCFNJyfZP7w&oe=66253ED9" alt="" />
-                                    </Link>
-                                    <div className=''>
-                                        <div className='w-80 flex flex-col gap-2'>
-                                            <div>
-                                                <Link to={"/"} className='text-[14px] font-semibold'>dongy_03</Link>
-                                                <span className='ml-2 text-sm font-normal '>cô ấy thật tuyệ vời đúng không hả các cậu , thật sự là như vậy đấy </span>
-                                            </div>
-
-                                            <div className='flex gap-4 items-center '>
-                                                <span className='text-xs font-light text-[#737373]'>1 tuần</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>8 lượt thích</span>
-                                                <span className='text-xs font-semibold text-[#737373]'>trả lời</span>
-                                            </div>
-
-                                            <div className='flex jutify-start items-center gap-4'>
-                                                <hr className='w-[26px] border-1' />
-                                                <button>
-                                                    <span className='text-xs font-semibold text-[#737373]'>xem câu trả lời (19)</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
 
                         {/* text submit */}
@@ -615,6 +352,8 @@ const Profile = () => {
                     </div>
                 </div>
             </Modal>
+
+            
         </div>
     )
 }

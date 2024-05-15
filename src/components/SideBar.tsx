@@ -1,7 +1,7 @@
 import { LogoutOutlined } from "@ant-design/icons";
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { AppContext } from '../context/AppProvider';
+import { Link, useNavigate } from 'react-router-dom';
+import { AppContext, socket } from '../context/AppProvider';
 
 const SideBar = () => {
     const {
@@ -10,6 +10,7 @@ const SideBar = () => {
         setOpenSearch,
         setOpenCreatePost
     } = useContext(AppContext)
+    const navigate = useNavigate()
 
     const logout = () => {
         (
@@ -25,7 +26,8 @@ const SideBar = () => {
                 })
 
                 const data = await res.json();
-                window.location.href = "/sign-in"
+                socket.emit('log-out')
+                navigate('sign-in')
                 console.log(data);
 
             }

@@ -1,7 +1,9 @@
 import { ReactNode, createContext, useState } from "react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
+import { io } from "socket.io-client";
 
+export const socket = io('ws://localhost:5000')
 export const AppContext = createContext({} as any)
 const queryClient = new QueryClient();
 
@@ -11,13 +13,16 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<any>(null); // save user infor
     const [icon, setIcon] = useState<Boolean>(false)
     const [contentMessage, setContentMessage] = useState<any>("") // nội dung tin nhắn chuẩn bị gửi
+    // tìm kiếm
     const [openSearch, setOpenSearch] = useState<boolean>(false)
+    // chi tiết bài viết
     const [openCreatePost, setOpenCreatePost] = useState<boolean>(false)
     const [openPostDetail, setOpenPostDetail] = useState<any>({
         status: false,
         data: null,
-        user : null
+        user: null
     })
+    // soket
 
     return (
         <QueryClientProvider client={queryClient}>
@@ -37,7 +42,7 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
                 openCreatePost,
                 setOpenCreatePost,
                 openPostDetail,
-                setOpenPostDetail
+                setOpenPostDetail,
             }}>
                 <BrowserRouter>
                     {children}
