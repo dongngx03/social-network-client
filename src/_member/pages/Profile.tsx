@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Empty, Image, Modal, Skeleton } from "antd"
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { Keyboard, Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -10,6 +10,8 @@ import { Popover } from 'antd'
 
 const Profile = () => {
     const { setSidebarMini, user, openPostDetail, setOpenPostDetail } = useContext(AppContext)
+    const [isOpenModalDelete, setIsmodelDelete] = useState<any>({ status: false, post_id: null })
+    const queryClient = useQueryClient()
     const { data, isLoading } = useQuery({
         queryKey: ['ALL_POST_ONE_USER'],
         queryFn: async () => {
@@ -20,12 +22,38 @@ const Profile = () => {
                 console.log(error);
             }
         }
+
     })
+
+    console.log(user);
+    
+
+    // xóa bài viết 
+    const { mutate, isPending } = useMutation({
+        mutationFn: async (post_id: number) => {
+            try {
+                const res = await instance.delete(`/v1/api/post/${post_id}`)
+                console.log(res);
+
+            } catch (error) {
+                console.log(error);
+
+            }
+        },
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries({ queryKey: ['ALL_POST_ONE_USER'] })
+        },
+    })
+
+    const deletePost = (post_id: number) => {
+        mutate(post_id)
+        setIsmodelDelete({ status: false, post_id: null })
+    }
 
     useEffect(() => {
         setSidebarMini(false);
     }, [])
-    console.log(openPostDetail);
 
     return (
         <div className='w-full h-full overflow-auto'>
@@ -57,11 +85,11 @@ const Profile = () => {
                                 <div className="flex justify-start items-center gap-8">
                                     <span className="font-sans "><strong>{data?.count}</strong> bài viết</span>
                                     <button className="font-sans">
-                                        <strong>6</strong> người theo dõi
+                                        <strong>{user?.user?._count?.following_2}</strong> người theo dõi
                                     </button>
 
                                     <button className="font-sans">
-                                        Đang theo dõi <strong>20</strong> người dùng
+                                        Đang theo dõi <strong>{user?.user?._count?.following_1}</strong> người dùng
                                     </button>
                                 </div>
 
@@ -124,7 +152,7 @@ const Profile = () => {
                         }
 
                         {
-                            isLoading
+                            isLoading || isPending
                                 ? <div className="flex justify-start flex-wrap gap-1">
                                     <Skeleton.Image
                                         style={{ width: '309px', height: '309px' }}
@@ -143,7 +171,12 @@ const Profile = () => {
                                             <Popover
                                                 content={(
                                                     <div className="flex flex-col gap-1">
-                                                        <button className="bg-red-500 p-1 text-white rounded-xl">Xóa</button>
+                                                        <button
+                                                            className="bg-red-500 p-1 text-white rounded-xl"
+                                                            onClick={() => setIsmodelDelete({ status: true, post_id: item.id })}
+                                                        >
+                                                            Xóa
+                                                        </button>
                                                         <button className="bg-blue-500 text-white rounded-xl p-1">Chỉnh sửa</button>
                                                     </div>
                                                 )}
@@ -177,6 +210,15 @@ const Profile = () => {
                 </div>
 
             </div>
+            {/* model confirm delete */}
+            <Modal
+                open={isOpenModalDelete.status}
+                title="Bạn có chắc muốn xóa bài viết này "
+                onCancel={() => setIsmodelDelete({ status: false, post_id: null })}
+                onOk={() => deletePost(isOpenModalDelete.post_id)}
+            >
+
+            </Modal>
 
             {/* post detail */}
             <Modal
@@ -353,7 +395,7 @@ const Profile = () => {
                 </div>
             </Modal>
 
-            
+
         </div>
     )
 }

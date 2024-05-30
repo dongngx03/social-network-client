@@ -1,29 +1,54 @@
 import { useContext, useEffect } from "react";
 import { AppContext } from "../../context/AppProvider";
 import { Link, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import instance from "../../services/instance";
 import Loading from "../../components/Loading";
 import NotFound from "../../components/NotFound";
-import { Empty, Image, Modal } from "antd";
+import { Empty, Image, Modal, Popconfirm } from "antd";
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Keyboard, Navigation, Pagination } from "swiper/modules";
+import { follow, unFollow } from "../../hooks/follow";
+
+
 
 
 const ProfileFriend = () => {
     const { nickname } = useParams()
-    const { setSidebarMini, openPostDetail, setOpenPostDetail } = useContext(AppContext)
+    const queryClient = useQueryClient()
+    const { setSidebarMini, openPostDetail, setOpenPostDetail, user } = useContext(AppContext)
     const { data, isLoading } = useQuery({
         queryKey: ["FRIEND"],
         queryFn: async () => {
             try {
-                const { data } = await instance.post("/v1/api/user/detail", { nickname: nickname })
+                const { data } = await instance.post("/v1/api/user/detail", { nickname: nickname, source_id: user?.user?.id })
                 return data
             } catch (error) {
                 return error
             }
         }
     })
+
+    const followService = follow(() => queryClient.invalidateQueries({ queryKey: ['FRIEND'] }))
+
+    const unFollowService = unFollow(() => queryClient.invalidateQueries({ queryKey: ['FRIEND'] }))
+
+    const handleFollow = () => {
+        followService.mutate({
+            source_id: user?.user?.id,
+            target_id: data?.data?.id
+        })
+    }
+
+    const handleUnFollow = () => {
+        unFollowService.mutate({
+            source_id: user?.user?.id,
+            target_id: data?.data?.id
+        })
+    }
+
+    console.log(data);
+
 
     useEffect(() => {
         setSidebarMini(false);
@@ -51,7 +76,27 @@ const ProfileFriend = () => {
                             <div className="w-2/3 flex flex-col gap-5 justify-center">
                                 <div className=" flex justify-start gap-5 items-center">
                                     <span className="text-[20px] font-normal font-sans">{data?.data?.nickname}</span>
-                                    <button className="bg-gray-200 px-3 py-[6px] text-sm rounded-md font-semibold font-sans hover:bg-[#DBDBDB]">Theo dõi</button>
+                                    {
+                                        data?.checkFollow
+                                            ? <Popconfirm
+                                                title="Xác nhận !"
+                                                description="Bạn muốn hủy theo dõi người này ?"
+                                                okText="Xác nhận"
+                                                cancelText="Hủy"
+                                                onConfirm={handleUnFollow}
+                                            >
+                                                <button className="bg-gray-200 px-3 py-[6px] text-sm rounded-md font-semibold font-sans hover:bg-[#DBDBDB]">Bỏ theo dõi</button>
+                                            </Popconfirm>
+                                            : <Popconfirm
+                                                title="Xác nhận"
+                                                description="Theo dõi người này ?"
+                                                okText="Xác nhận"
+                                                cancelText="Hủy"
+                                                onConfirm={handleFollow}
+                                            >
+                                                <button className="bg-gray-200 px-3 py-[6px] text-sm rounded-md font-semibold font-sans hover:bg-[#DBDBDB]">Theo dõi</button>
+                                            </Popconfirm>
+                                    }
                                     <button className="bg-gray-200 px-3 py-[6px] text-sm rounded-md font-semibold font-sans hover:bg-[#DBDBDB]">Nhắn tin</button>
                                     <button>
                                         <svg aria-label="Tùy chọn" className="x1lliihq x1n2onr6 x5n08af" fill="currentColor" height="24" role="img" viewBox="0 0 24 24" width="24"><title>Tùy chọn</title><circle cx="12" cy="12" fill="none" r="8.635" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></circle><path d="M14.232 3.656a1.269 1.269 0 0 1-.796-.66L12.93 2h-1.86l-.505.996a1.269 1.269 0 0 1-.796.66m-.001 16.688a1.269 1.269 0 0 1 .796.66l.505.996h1.862l.505-.996a1.269 1.269 0 0 1 .796-.66M3.656 9.768a1.269 1.269 0 0 1-.66.796L2 11.07v1.862l.996.505a1.269 1.269 0 0 1 .66.796m16.688-.001a1.269 1.269 0 0 1 .66-.796L22 12.93v-1.86l-.996-.505a1.269 1.269 0 0 1-.66-.796M7.678 4.522a1.269 1.269 0 0 1-1.03.096l-1.06-.348L4.27 5.587l.348 1.062a1.269 1.269 0 0 1-.096 1.03m11.8 11.799a1.269 1.269 0 0 1 1.03-.096l1.06.348 1.318-1.317-.348-1.062a1.269 1.269 0 0 1 .096-1.03m-14.956.001a1.269 1.269 0 0 1 .096 1.03l-.348 1.06 1.317 1.318 1.062-.348a1.269 1.269 0 0 1 1.03.096m11.799-11.8a1.269 1.269 0 0 1-.096-1.03l.348-1.06-1.317-1.318-1.062.348a1.269 1.269 0 0 1-1.03-.096" fill="none" stroke="currentColor" strokeLinejoin="round" strokeWidth="2"></path></svg>
@@ -61,11 +106,11 @@ const ProfileFriend = () => {
                                 <div className="flex justify-start items-center gap-8">
                                     <span className="font-sans "><strong>{data?.coutPost}</strong> bài viết</span>
                                     <button className="font-sans">
-                                        <strong>6</strong> người theo dõi
+                                        <strong>{data?.data?._count?.following_2}</strong> người theo dõi
                                     </button>
 
                                     <button className="font-sans">
-                                        Đang theo dõi <strong>20</strong> người dùng
+                                        Đang theo dõi <strong>{data?.data?._count?.following_1}</strong> người dùng
                                     </button>
                                 </div>
 

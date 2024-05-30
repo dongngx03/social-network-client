@@ -2,7 +2,7 @@
 const SignIn = () => {
     const google = () => {
         window.open("http://localhost:5000/auth/google", "_self");
-        
+
     }
     return (
         <div className="w-full h-screen flex justify-center items-center">
