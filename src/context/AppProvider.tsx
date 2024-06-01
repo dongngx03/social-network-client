@@ -12,7 +12,7 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
     const [comment, setComment] = useState<boolean>(false); // block and none tab comment
     const [user, setUser] = useState<any>(null); // save user infor
     const [icon, setIcon] = useState<Boolean>(false)
-    const [contentMessage, setContentMessage] = useState<any>("") // nội dung tin nhắn chuẩn bị gửi
+    const [contentMessage, setContentMessage] = useState<any>("") // nội dung tin nhắn chuẩn bị gử
     // tìm kiếm
     const [openSearch, setOpenSearch] = useState<boolean>(false)
     // chi tiết bài viết

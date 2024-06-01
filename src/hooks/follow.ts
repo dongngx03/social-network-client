@@ -34,3 +34,18 @@ export const unFollow = (callback: () => any) => {
         ...rest
     }
 }
+
+export const getAllUserFollowing = async (user_id: number | string, type: "FOLLOWING" | "FOLLOW") => {
+    switch (type) {
+        case "FOLLOW":
+            const { data } = await instance.get('/v1/api/following/users-follow-me/'+ user_id)
+            return data
+            break;
+        case "FOLLOWING":
+            const res = await instance.get('/v1/api/following/users-following/'+ user_id)
+            return res['data']
+        default:
+            break;
+            return
+    }
+}

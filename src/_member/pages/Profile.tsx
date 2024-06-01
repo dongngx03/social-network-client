@@ -1,16 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Empty, Image, Modal, Skeleton } from "antd"
+import { Empty, Image, Modal, Popover, Skeleton } from "antd"
 import { useContext, useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import { Link } from "react-router-dom"
 import { Keyboard, Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { AppContext } from "../../context/AppProvider"
+import { getAllUserFollowing } from "../../hooks/follow"
+import followingSlice from "../../redux/slice/follwing.slice"
 import instance from "../../services/instance"
-import { Popover } from 'antd'
 
 const Profile = () => {
     const { setSidebarMini, user, openPostDetail, setOpenPostDetail } = useContext(AppContext)
     const [isOpenModalDelete, setIsmodelDelete] = useState<any>({ status: false, post_id: null })
+    const dispatch = useDispatch()
     const queryClient = useQueryClient()
     const { data, isLoading } = useQuery({
         queryKey: ['ALL_POST_ONE_USER'],
@@ -26,7 +29,7 @@ const Profile = () => {
     })
 
     console.log(user);
-    
+
 
     // xóa bài viết 
     const { mutate, isPending } = useMutation({
@@ -46,6 +49,20 @@ const Profile = () => {
         },
     })
 
+    const handleGetMemberFollow = async (e: any) => {
+        e.preventDefault()
+        const list = await getAllUserFollowing(user?.user?.id, "FOLLOW")
+        dispatch(followingSlice.actions.getMemberListFollowing({ isOpen: true, memberList: list.data, title: "Danh sách người theo dõi bạn", type: "SENDER" } as any))
+    }
+
+    const handleGetMemberFollowing = async (e: any) => {
+        e.preventDefault()
+        const list = await getAllUserFollowing(user?.user?.id, "FOLLOWING")
+        dispatch(followingSlice.actions.getMemberListFollowing({ isOpen: true, memberList: list.data, title: "Danh sách người mà bạn đang theo dõi", type: "RECIEVER" } as any))
+    }
+
+
+
     const deletePost = (post_id: number) => {
         mutate(post_id)
         setIsmodelDelete({ status: false, post_id: null })
@@ -54,6 +71,8 @@ const Profile = () => {
     useEffect(() => {
         setSidebarMini(false);
     }, [])
+
+
 
     return (
         <div className='w-full h-full overflow-auto'>
@@ -84,11 +103,17 @@ const Profile = () => {
 
                                 <div className="flex justify-start items-center gap-8">
                                     <span className="font-sans "><strong>{data?.count}</strong> bài viết</span>
-                                    <button className="font-sans">
+                                    <button
+                                        className="font-sans"
+                                        onClick={handleGetMemberFollow}
+                                    >
                                         <strong>{user?.user?._count?.following_2}</strong> người theo dõi
                                     </button>
 
-                                    <button className="font-sans">
+                                    <button
+                                        className="font-sans"
+                                        onClick={handleGetMemberFollowing}
+                                    >
                                         Đang theo dõi <strong>{user?.user?._count?.following_1}</strong> người dùng
                                     </button>
                                 </div>
@@ -169,6 +194,7 @@ const Profile = () => {
                                     {
                                         data?.data?.map((item: any, index: number) => (
                                             <Popover
+                                                key={index}
                                                 content={(
                                                     <div className="flex flex-col gap-1">
                                                         <button

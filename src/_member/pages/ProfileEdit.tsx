@@ -63,8 +63,8 @@ const ProfileEdit = () => {
         }
     }, [messageResult])
 
-    const onSubmit: SubmitHandler<formUser> = (data: formUser) => {
-        const { id, ...rest } = data
+    const onSubmit: SubmitHandler<formUser> = (data: any) => {
+        const { id, following_1, following_2, _count, ...rest } = data
         setIsModalOpen({
             status: true,
             newInfor: { ...rest }

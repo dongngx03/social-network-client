@@ -1,5 +1,6 @@
-import { Image, Modal, Spin, message } from "antd";
+import { Drawer, Empty, Image, Modal, Spin, message } from "antd";
 import { useContext, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import Loading from "../components/Loading";
 import SideBar from "../components/SideBar";
@@ -10,6 +11,7 @@ import { AppContext } from "../context/AppProvider";
 import { createPost } from "../hooks/post";
 import uploadFile from "../hooks/uploadFile";
 import useGetUser from "../hooks/useGetUser";
+import followingSlice from "../redux/slice/follwing.slice";
 
 
 const MemberLayout = () => {
@@ -24,6 +26,9 @@ const MemberLayout = () => {
         setIcon
     } = useContext(AppContext);
     const { isLoading } = useGetUser(setUser)
+    const dispatch = useDispatch()
+    // get state following redux
+    const stateFollowing = useSelector((state: any) => state.follows)
     // ảnh demo
     const [imgUrl, setImgUrl] = useState<string>('')
     const [file, setFile] = useState<string>('')
@@ -72,7 +77,7 @@ const MemberLayout = () => {
         }
     }
     console.log(user);
-
+    console.log(stateFollowing);
 
     if (isLoading) return <Loading />
     return (
@@ -174,6 +179,61 @@ const MemberLayout = () => {
                         </div>
                 }
             </Modal>
+
+            {/* danh sách bạn bè, người theo dõi, người đang theo dõi  */}
+            <Drawer
+                open={stateFollowing.isOpen}
+                onClose={() => dispatch(followingSlice.actions.getMemberListFollowing({ isOpen: false, memberList: [], title: "" } as any))}
+                title={stateFollowing.title}
+            >
+
+                <div className="w-full h-full overflow-auto flex flex-col">
+                    {
+                        stateFollowing.memberList && Array.isArray(stateFollowing.memberList) && stateFollowing.memberList.length > 0 ? (
+                            stateFollowing.memberList.map((member: any, index: number) => {
+                                if (stateFollowing.type === "SENDER") {
+                                    const { sender } = member;
+                                    return (
+                                        <a href={`/profile/${sender.nickname}`} key={index} className="flex items-center gap-4 mb-4 hover:bg-gray-100 px-2 py-3 rounded-md">
+                                            <img
+                                                src={sender.avatar}
+                                                alt={sender.nickname}
+                                                className="w-10 h-10 rounded-full object-cover"
+                                            />
+                                            <div>
+                                                <p className="font-semibold">{sender.fistname} {sender.lastname}</p>
+                                                <p className="text-sm text-gray-500">@{sender.nickname}</p>
+                                            </div>
+                                        </a>
+                                    );
+                                } else {
+                                    const { reciever } = member;
+                                    return (
+                                        <a href={`/profile/${reciever.nickname}`} key={index} className="flex items-center gap-4 mb-4 hover:bg-gray-100 px-2 py-3 rounded-md">
+                                            <img
+                                                src={reciever.avatar}
+                                                alt={reciever.nickname}
+                                                className="w-10 h-10 rounded-full object-cover"
+                                            />
+                                            <div>
+                                                <p className="font-semibold">{reciever.fistname} {reciever.lastname}</p>
+                                                <p className="text-sm text-gray-500">@{reciever.nickname}</p>
+                                            </div>
+                                        </a>
+                                    );
+                                }
+                            })
+                        ) : (
+                            <Empty></Empty>
+                        )
+                    }
+                </div>
+
+            </Drawer>
+
+            <div>
+
+            </div>
         </div>
     )
 }
